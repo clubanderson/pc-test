@@ -8,7 +8,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi  # Adjust the storage size as needed
+      storage: 20Gi  # Adjust the storage size as needed
 ---
 apiVersion: v1
 kind: Pod
