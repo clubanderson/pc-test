@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspace-pvc
+  namespace: test-and
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi  # Adjust the storage size as needed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: darknet-deployment
+  namespace: test-and
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: darknet-app
+  template:
+    metadata:
+      labels:
+        app: darknet-app
+    spec:
+      containers:
+      - name: darknet-container
+        image: daisukekobayashi/darknet:gpu-cv-cc86
+        command: ["darknet"]
+        args:
+        - "detector"
+        - "test"
+        - "/data/coco.data"
+        - "/cfg/yolov3.cfg"
+        - "/weights/yolov3-weights"
+        - "-i"
+        - "0"
+        - "-thresh"
+        - "0.25"
+        - "/dog/dog.jpg"
+        - "-ext_output"
+        volumeMounts:
+        - name: workspace-volume
+          mountPath: /workspace
+        - name: data-configmap-volume
+          mountPath: /data
+        - name: labels-configmap-volume
+          mountPath: /data/labels
+        - name: dog-configmap-volume
+          mountPath: /dog
+        - name: cfg-configmap-volume
+          mountPath: /cfg
+        - name: yolo-weights-volume
+          mountPath: /weights
+      volumes:
+      - name: workspace-volume
+        persistentVolumeClaim:
+          claimName: workspace-pvc  # Reference the PVC name here
+      - name: yolo-weights-volume
+        persistentVolumeClaim:
+          claimName: yolo-weights-pvc
+      - name: data-configmap-volume
+        configMap:
+          name: data-configmap
+      - name: labels-configmap-volume
+        configMap:
+          name: labels-configmap
+      - name: cfg-configmap-volume
+        configMap:
+          name: cfg-configmap
+      - name: dog-configmap-volume
+        configMap:
+          name: dog-configmap
+

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: yolo-weights-pvc
+  namespace: test-and
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi  # Adjust the storage size as needed
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: upload-pod
+  namespace: test-and
+spec:
+  containers:
+  - name: uploader
+    image: busybox
+    # command: ["/bin/sh", "-c", "tail -f /dev/null"]
+    command: [ "sh", "-c", "--" ]
+    args: [ "while true; do sleep 30; done;" ]
+    volumeMounts:
+    - name: data
+      mountPath: /data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: yolo-weights-pvc

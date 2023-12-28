@@ -1,6 +1,0 @@
-classes = 52
-train = /home/paperspace/darknet/data/train.txt
-valid = /home/paperspace/darknet/data/test.txt
-names = /home/paperspace/darknet/data/obj.names
-
-backup = /home/paperspace/darknet/ouput/

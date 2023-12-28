@@ -1,5 +1,5 @@
 # this file get all the images form the data/obj folder 
-# and creates a file train.txt with contaiting list of all images
+# and creates a file train.txt with containing list of all images
 
 import os
 files_list = []
