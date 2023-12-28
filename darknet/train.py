@@ -8,7 +8,7 @@ path = os.path.join('data', 'obj')
 #list all files
 for file in os.listdir(path):
     if file.endswith('.jpg'):
-        files_list.append(("data/obj/"+file))
+        files_list.append(("yolo/obj/"+file))
 print(files_list) 
 with open("data/train.txt","w") as new_file:
     for file in files_list:
