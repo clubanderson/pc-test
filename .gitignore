@@ -4,4 +4,3 @@ darknet/yolov4.conv.137
 dtd
 darknet/output/
 .DS_Store
-darknet/yolov4-custom1_last.weights
